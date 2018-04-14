@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>VueJs - PHP | CRUD</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<div id="main">
+		<div class="container">
+			<h1 class="fleft">List Users</h1>
+			<button class="fright addNew" @click="showingAddModal = true">Add New</button>
+			<div class="clear"></div>
+			<hr>
+			<p class="errorMessage" v-if="errorMessage">{{errorMessage}}</p>
+			<p class="successMessage" v-if="successMessage">{{successMessage}}</p>
+			<table class="list">
+				<tr>
+					<th>ID</th>
+					<th>Username</th>
+					<th>Email</th>
+					<th>Mobile</th>
+					<th>Edit</th>
+					<th>Delete</th>
+				</tr>
+				<tr v-for="user in users">
+					<td>{{user.id}}</td>
+					<td>{{user.username}}</td>
+					<td>{{user.email}}</td>
+					<td>{{user.mobile}}</td>
+					<td><button @click="showingEditModal = true; selectedUser(user)">Edit</button></td>
+					<td><button @click="showingDeleteModal = true; selectedUser(user)">Delete</button></td>
+				</tr>
+			</table>
+			<span>Go to <a href="admin.php">Admin</a></span>
+			<!--Modal Add-->
+			<div class="modal" id="addModal" v-show="showingAddModal">
+				<div class="modalContainer">
+					<div class="modalHeading">
+						<p>Add New User</p>
+						<button class="fright close" @click="showingAddModal = false">X</button>
+						<div class="clear"></div>
+					</div>
+					<div class="modalContent">
+						<table class="form">
+							<tr>
+								<th>Username:</th>
+								<th><input type="text" name="username" v-model="newUser.username" placeholder="Username"></th>
+							</tr>
+							<tr>
+								<th>Email:</th>
+								<th><input type="text" name="email" v-model="newUser.email" placeholder="Email"></th>
+							</tr>
+							<tr>
+								<th>Mobile:</th>
+								<th><input type="text" name="mobile" v-model="newUser.mobile" placeholder="Mobile"></th>
+							</tr>
+							<tr>
+								<th> </th>
+								<th><button type="" @click="showingAddModal= false; saveUser();">Add</button></th>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!--Modal Edit-->
+			<div class="modal" id="editModal" v-show="showingEditModal">
+				<div class="modalContainer">
+					<div class="modalHeading">
+						<p>Edit User</p>
+						<button class="fright close" @click="showingEditModal = false">X</button>
+						<div class="clear"></div>
+					</div>
+					<div class="modalContent">
+						<table class="form">
+							<tr>
+								<th>Username:</th>
+								<th><input type="text" v-model="clickedUser.username" name="username" placeholder="Username"></th>
+							</tr>
+							<tr>
+								<th>Email:</th>
+								<th><input type="text" v-model="clickedUser.email" name="email" placeholder="Email"></th>
+							</tr>
+							<tr>
+								<th>Mobile:</th>
+								<th><input type="text" v-model="clickedUser.mobile" name="mobile" placeholder="Mobile"></th>
+							</tr>
+							<tr>
+								<th> </th>
+								<th><button type="" @click="showingEditModal=false; updateUser();">Edit</button></th>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+			<!--Modal Delete-->
+			<div class="modal" id="deleteModal" v-show="showingDeleteModal">
+				<div class="modalContainer">
+					<div class="modalHeading">
+						<p>Delete User</p>
+						<button class="fright close" @click="showingDeleteModal = false">X</button>
+						<div class="clear"></div>
+					</div>
+					<div class="modalContent">
+						<h2>Are you sure to delete this user?</h2>
+						<hr>
+						<br>
+						<p>{{clickedUser.username}} | {{clickedUser.email}}</p>
+						<br>				
+						<button class="fright" @click="showingDeleteModal=false; deleteUser();">Yes</button>
+						<button class="fright" @click="showingDeleteModal=false;">No</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<script type="text/javascript" src="vue.min.js"></script>
+	<script type="text/javascript" src="axios.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+</body>
+</html>
